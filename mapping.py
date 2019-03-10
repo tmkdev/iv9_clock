@@ -111,12 +111,24 @@ def converttoarray(byteval):
 
     return b
 
+#TPIC to IV9
+#MSB
+# DRAIN0 7 - Pin 2
+# DRAIN1 6 - Pin 7
+# DRAIN2 5 - Pin 6
+# DRAIN3 4 - Pin 9
+# DRAIN4 3 - Pin 8
+# DRAIN5 2 - Pin 4
+# DRAIN6 1 - Pin 3
+# DRAIN7 0 - Pin 5
+#LSB
+    
+
 def str_rep(byteval):
     b = converttoarray(byteval)
 
     ascii='   \n'
 
-    #LSB
     #Seg a - Pin 5
     if b[0]:
         ascii='+-+\n'
