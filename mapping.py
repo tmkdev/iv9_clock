@@ -116,39 +116,49 @@ def str_rep(byteval):
 
     ascii='   \n'
 
+    #LSB
+    #Seg a - Pin 5
     if b[0]:
         ascii='+-+\n'
 
+    #Seg f - Pin 6
     if b[5]:
         ascii+='| '
     else:
         ascii+='  '
 
+    #Seg b - Pin 3
     if b[1]:
         ascii+='|\n'
     else:
         ascii+=' \n'
 
+    #Seg g - Pin 7
     if b[6]:
         ascii+='+-+\n'
     else:
         ascii+='   \n'
 
+    #Seg e- Pin 9
     if b[4]:
         ascii+='| '
     else:
         ascii+='  '
 
+    #Seg c- Pin 4
     if b[2]:
         ascii+='|\n'
     else:
         ascii+=' \n'
 
+    #Seg d- Pin 8
     if b[3]:
         ascii+='+-+'
     else:
         ascii+='   '
 
+    #MSB
+    #Seg .- Pin 2
     if b[7]:
         ascii +='.\n'
     else:
