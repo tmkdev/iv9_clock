@@ -183,6 +183,6 @@ def str_rep(byteval):
 if __name__ == '__main__':
     for num in ['1', '2', '5', '9']:
         char = segment_map[str(num)]
-        print(f'{char:b}')
+        print('{0:b}'.format(char))
         print(str_rep(char))
         
