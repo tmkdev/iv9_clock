@@ -5,12 +5,12 @@ from time import sleep
 from gpiozero.pins.mock import MockFactory
 from gpiozero import Device, DigitalOutputDevice
 
-#Todo: Make this configurable.. 
+#Todo: Make this configurable..
 #Device.pin_factory = MockFactory()
 
 
 class ShiftRegister(object):
-    def __init__(self, data_pin=22, latch_pin=27, clock_pin=17, num_registers=1):
+    def __init__(self, data_pin=17, latch_pin=27, clock_pin=22, num_registers=1):
         self.data = DigitalOutputDevice(pin=data_pin)
         self.latch = DigitalOutputDevice(pin=latch_pin)
         self.clock = DigitalOutputDevice(pin=clock_pin)
