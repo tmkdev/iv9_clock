@@ -26,35 +26,39 @@ def get_fourtube():
 
 def clock(numtubes=2):
     shiftreg = ShiftRegister(num_registers=numtubes)
+    ishour = False
+    ispm = False
+
     while True:
         if numtubes == 2:
             chars, ishour = get_twotube()
         elif numtubes == 4:
             chars, ispm = get_fourtube()
 
-        print(chars)
         bytelist = []
 
-        for c in chars:
+        #Reverse the order of the string - clocks into the clock backwards. 
+        for c in chars[::-1]:
             char = segment_map[str(c)]
             bytelist.append(char)
             logging.info(str_rep(char))
 
-        #Map Periods. 
-        if numtubes == 2 and ishour:
-            bytelist[0] = bytelist[0] | 0x80
-        else:
-            bytelist[1] = bytelist[1] | 0x80
+        #Map Periods.
+        if numtubes == 2:
+            if ishour:
+                bytelist[1] = bytelist[1] | 0x80
+            else:
+                bytelist[0] = bytelist[0] | 0x80
 
-        if numtubes == 4 and ispm:
-            bytelist[1] = bytelist[1] | 0x80
-        else:
-            bytelist[2] = bytelist[2] | 0x80
+        if numtubes == 4:
+            if ispm:
+                bytelist[1] = bytelist[1] | 0x80
+            else:
+                bytelist[2] = bytelist[2] | 0x80
 
         shiftreg.write(bytelist)
 
-        time.sleep(0.5)
-
+        time.sleep(0.01)
 
 if __name__ == '__main__':
     try:
