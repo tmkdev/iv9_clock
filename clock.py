@@ -52,9 +52,13 @@ def clock(numtubes=2):
 
         if numtubes == 4:
             if ispm:
-                bytelist[1] = bytelist[1] | 0x80
-            else:
                 bytelist[2] = bytelist[2] | 0x80
+            else:
+                bytelist[3] = bytelist[3] | 0x80
+
+            if datetime.datetime.now().second % 2:
+                bytelist[1] = bytelist[1] | 0x80
+
 
         shiftreg.write(bytelist)
 
