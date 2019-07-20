@@ -22,7 +22,7 @@ def get_fourtube():
     now = datetime.datetime.now()
     ispm = False if now.strftime('%p') == 'PM' else True
 
-    return replace_zero(now.strftime('%H%M')), ispm
+    return replace_zero(now.strftime('%I%M')), ispm
 
 def clock(numtubes=2):
     shiftreg = ShiftRegister(num_registers=numtubes)
@@ -37,7 +37,7 @@ def clock(numtubes=2):
 
         bytelist = []
 
-        #Reverse the order of the string - clocks into the clock backwards. 
+        #Reverse the order of the string - clocks into the clock backwards.
         for c in chars[::-1]:
             char = segment_map[str(c)]
             bytelist.append(char)
