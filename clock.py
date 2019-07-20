@@ -1,3 +1,4 @@
+import argparse
 import datetime
 import time
 import logging
@@ -18,22 +19,25 @@ def get_twotube():
     else:
         return now.strftime('%M'), False
 
-def get_fourtube():
+def get_fourtube(miltime):
     now = datetime.datetime.now()
     ispm = False if now.strftime('%p') == 'PM' else True
 
+    if miltime:
+        return replace_zero(now.strftime('%H%M')), ispm
+        
     return replace_zero(now.strftime('%I%M')), ispm
 
-def clock(numtubes=2):
+def clock(args):
     shiftreg = ShiftRegister(num_registers=numtubes)
     ishour = False
     ispm = False
 
     while True:
-        if numtubes == 2:
+        if args.numtubes == 2:
             chars, ishour = get_twotube()
-        elif numtubes == 4:
-            chars, ispm = get_fourtube()
+        elif args.numtubes == 4:
+            chars, ispm = get_fourtube(args.miltime)
 
         bytelist = []
 
@@ -51,24 +55,26 @@ def clock(numtubes=2):
                 bytelist[0] = bytelist[0] | 0x80
 
         if numtubes == 4:
-            if ispm:
-                bytelist[2] = bytelist[2] | 0x80
-            else:
-                bytelist[3] = bytelist[3] | 0x80
+            if args.ampm 
+                if ispm:
+                    bytelist[2] = bytelist[2] | 0x80
+                else:
+                    bytelist[3] = bytelist[3] | 0x80
 
-            if datetime.datetime.now().second % 2:
+            if args.seconds and datetime.datetime.now().second % 2:
                 bytelist[1] = bytelist[1] | 0x80
-
 
         shiftreg.write(bytelist)
 
-        time.sleep(0.01)
+        time.sleep(0.1)
 
 if __name__ == '__main__':
-    try:
-        numtubes = int(os.getenv('NUMTUBES', '2'))
-    except:
-        logging.critical('Please set NUMTUBES env - 2 or 4 supported.')
-    logging.warning('Starting clock with {0} tubes'.format(numtubes))
+    parser = argparse.ArgumentParser(description='Numitron Clock')
+    parser.add_argument('--numtubes', action='store', type=int, default=4, help='Number of numitron tube supported. Defaults to 4.')
+    parser.add_argument('--ampm', action='store', type=bool, default=False, help='AmPm indicator enable. Defaults false.')
+    parser.add_argument('--seconds', action='store', type=bool, default=False, help='Flashing Seconds indicator. Defaults false.')
+    parser.add_argument('--miltime', action='store', type=bool, default=False, help='24 Hour display. Defaults to False. (12H)')
 
-    clock(numtubes)
+    args = parser.parse_args()
+
+    clock(args)
